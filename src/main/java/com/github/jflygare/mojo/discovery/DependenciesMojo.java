@@ -12,7 +12,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import com.github.jflygare.mojo.discovery.gui.DependenciesPanel;
 import com.github.jflygare.mojo.discovery.util.GraphFactory;
 
-@Mojo(name = "discovery", threadSafe = true, aggregator = true)
+@Mojo(name = "dependencies", threadSafe = true, aggregator = true)
 public class DependenciesMojo extends AbstractMojo {
 
 	@Component(hint = "dependency")
@@ -33,6 +33,10 @@ public class DependenciesMojo extends AbstractMojo {
 			jf.getContentPane().add(jp);
 			jf.pack();
 			jf.setVisible(true);
+			while (jf.isVisible()) {
+				// block
+				Thread.sleep(100);
+			}
 		} catch (Exception e) {
 			throw new MojoExecutionException("Unable to start GUI", e);
 		}

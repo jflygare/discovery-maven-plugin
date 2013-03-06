@@ -24,6 +24,10 @@ public class DependenciesPanelExplorer {
         jf.getContentPane().add(jp);
         jf.pack();
         jf.setVisible(true);
+        while (jf.isVisible()) {
+        	//block
+        	Thread.sleep(100);
+        }
 	}
 
 }
