@@ -1,8 +1,13 @@
 package com.github.jflygare.mojo.discovery.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
+import java.awt.Insets;
 import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,6 +15,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JApplet;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
 
 import com.github.jflygare.mojo.discovery.util.GraphFactory;
 import com.github.jflygare.mojo.discovery.util.MavenContext;
@@ -69,10 +75,16 @@ public class DependenciesPanel extends JApplet implements ActionListener {
 		pr.setVertexLabelCentering(true);
 		pr.setVertexStringer(StringLabeller.getLabeller(graph));
 		pr.setEdgeShapeFunction(new EdgeShape.Line());
-		DAGLayout layout = new DAGLayout(graph);
+		DEPLayout layout = new DEPLayout(graph);
+		//FIXME: Calculate based on objects in layout
+		layout.initialize(new Dimension(1900, 1024));
+		//DAGLayout layout = new DAGLayout(graph);
 		//SpringLayout layout = new SpringLayout(graph);
-		layout.setForceMultiplier(0);
+		layout.setForceMultiplier(.00005);
+		layout.setRepulsionRange(10000);
+		layout.setStretch(5);
 		vv = new VisualizationViewer(layout, pr);
+		vv.setBackground(Color.WHITE);
 
 		DefaultModalGraphMouse graphMouse = new DefaultModalGraphMouse();
 		graphMouse.setMode(Mode.PICKING);
@@ -81,6 +93,7 @@ public class DependenciesPanel extends JApplet implements ActionListener {
 		vv.setToolTipFunction(new VNodeToolTipFunction());
 
 		JPanel jp = new JPanel();
+		jp.setPreferredSize(new Dimension(1280, 1024));
 		jp.setLayout(new BorderLayout());
 		jp.add(vv, BorderLayout.CENTER);
 		return jp;
